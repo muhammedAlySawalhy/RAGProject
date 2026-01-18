@@ -1,0 +1,20 @@
+# FastAPI & Server
+fastapi
+uvicorn
+python-multipart
+langchain_memgraph
+rank_bm25
+langchain
+langchain-ollama
+langgraph
+
+mem0ai
+
+redis
+rq
+
+# Environment
+python-dotenv
+
+# WebSockets
+websockets

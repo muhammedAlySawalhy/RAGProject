@@ -1,0 +1,19 @@
+# Dockerfile.worker
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Copy everything into the container
+COPY . /app
+
+# Install dependencies
+RUN pip install rq redis
+
+
+RUN pip install -r requirements.txt || true
+
+# Set Python path
+ENV PYTHONPATH=/app
+
+# Run the worker
+CMD ["rq", "worker", "--url", "redis://:mempass@valkey:6379", "-v"]

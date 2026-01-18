@@ -1,0 +1,58 @@
+services:
+  memgraph:
+    image: memgraph/memgraph-mage
+    environment:
+      - username=memgraph
+      - password=password
+    ports:
+      - "7687:7687"
+      - "7444:7444"
+    networks:
+      - backend
+
+  lab:
+    image: memgraph/lab
+    ports:
+      - "3000:3000"
+    environment:
+      QUICK_CONNECT_MG_HOST: memgraph
+    networks:
+      - backend
+
+  vector-db:
+    image: qdrant/qdrant
+    ports:
+      - 6333:6333
+    networks:
+      - backend
+
+  valkey:
+    image: valkey/valkey
+    container_name: valkey
+    command: valkey-server --requirepass mempass
+    ports:
+      - "6378:6379"
+    networks:
+      - backend
+
+  worker:
+    build:
+      context: .
+      dockerfile: dockerfile.worker
+    working_dir: /app
+    depends_on:
+      - valkey
+      - memgraph
+    environment:
+      - PYTHONPATH=/app
+      - OLLAMA_HOST=http://host.docker.internal:11434
+      - MEMGRAPH_HOST=memgraph
+    networks:
+      - backend
+    restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+networks:
+  backend:
+    driver: bridge
