@@ -1,9 +1,13 @@
+import os
+
 from redis import Redis
 from rq import Queue
 
-queue = Queue(connection=Redis(
-    host="localhost",
-    port="6378",
-    password="mempass"
-    
-))
+
+REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
+REDIS_PORT = int(os.getenv("REDIS_PORT", "6379"))
+REDIS_PASSWORD = os.getenv("REDIS_PASSWORD", "mempass")
+
+queue = Queue(
+    connection=Redis(host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASSWORD)
+)

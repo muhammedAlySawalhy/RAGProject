@@ -1,0 +1,350 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+
+    --radius: 0.5rem;
+
+    /* Custom chat colors */
+    --assistant: 210 40% 96.1%;
+    --assistant-foreground: 222.2 47.4% 11.2%;
+    --user: 221.2 83.2% 53.3%;
+    --user-foreground: 210 40% 98%;
+
+    /* Scrollbar */
+    --scrollbar-track: 210 40% 96.1%;
+    --scrollbar-thumb: 215.4 16.3% 76.9%;
+    --scrollbar-thumb-hover: 215.4 16.3% 56.9%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+
+    /* Custom chat colors (dark mode) */
+    --assistant: 217.2 32.6% 17.5%;
+    --assistant-foreground: 210 40% 98%;
+    --user: 217.2 91.2% 59.8%;
+    --user-foreground: 222.2 47.4% 11.2%;
+
+    /* Scrollbar (dark mode) */
+    --scrollbar-track: 217.2 32.6% 17.5%;
+    --scrollbar-thumb: 215 20.2% 35.1%;
+    --scrollbar-thumb-hover: 215 20.2% 45.1%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Custom scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--scrollbar-track));
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--scrollbar-thumb));
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--scrollbar-thumb-hover));
+  }
+
+  /* Firefox scrollbar */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--scrollbar-thumb)) hsl(var(--scrollbar-track));
+  }
+
+  /* Focus visible styles */
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+
+  /* Remove default focus for mouse users */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+}
+
+@layer components {
+  /* Chat message bubbles */
+  .message-bubble {
+    @apply rounded-2xl px-4 py-2.5 max-w-message;
+  }
+
+  .message-bubble-user {
+    @apply bg-user text-user-foreground rounded-br-md;
+  }
+
+  .message-bubble-assistant {
+    @apply bg-assistant text-assistant-foreground rounded-bl-md;
+  }
+
+  /* Card styles */
+  .card-elevated {
+    @apply bg-card rounded-lg border shadow-card-elevated;
+  }
+
+  /* Input field styling */
+  .input-chat {
+    @apply flex w-full rounded-2xl border border-input bg-background px-4 py-3 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  /* Button variants */
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground ring-offset-background transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-lg bg-secondary px-4 py-2 text-sm font-medium text-secondary-foreground ring-offset-background transition-colors hover:bg-secondary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  .btn-icon {
+    @apply inline-flex items-center justify-center rounded-lg p-2 text-sm font-medium ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  /* Loading states */
+  .loading-dots {
+    @apply inline-flex items-center gap-1;
+  }
+
+  .loading-dots span {
+    @apply h-2 w-2 rounded-full bg-current animate-bounce-subtle;
+  }
+
+  .loading-dots span:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+
+  .loading-dots span:nth-child(3) {
+    animation-delay: 0.2s;
+  }
+
+  /* File upload dropzone */
+  .dropzone {
+    @apply border-2 border-dashed border-border rounded-lg p-8 text-center transition-colors cursor-pointer;
+  }
+
+  .dropzone-active {
+    @apply border-primary bg-primary/5;
+  }
+
+  .dropzone:hover:not(.dropzone-active) {
+    @apply border-muted-foreground/50;
+  }
+
+  /* Prose/Markdown styling enhancements */
+  .prose-chat {
+    @apply prose prose-sm max-w-none;
+  }
+
+  .prose-chat pre {
+    @apply bg-muted rounded-lg overflow-x-auto;
+  }
+
+  .prose-chat code {
+    @apply text-sm;
+  }
+
+  .prose-chat p {
+    @apply my-1.5;
+  }
+
+  .prose-chat p:first-child {
+    @apply mt-0;
+  }
+
+  .prose-chat p:last-child {
+    @apply mb-0;
+  }
+
+  .prose-chat ul,
+  .prose-chat ol {
+    @apply my-2 ml-4;
+  }
+
+  .prose-chat li {
+    @apply my-0.5;
+  }
+
+  /* Badge styles */
+  .badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+  }
+
+  .badge-primary {
+    @apply bg-primary/10 text-primary;
+  }
+
+  .badge-secondary {
+    @apply bg-secondary text-secondary-foreground;
+  }
+
+  .badge-success {
+    @apply bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400;
+  }
+
+  .badge-warning {
+    @apply bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400;
+  }
+
+  .badge-destructive {
+    @apply bg-destructive/10 text-destructive;
+  }
+
+  /* Sidebar styles */
+  .sidebar {
+    @apply flex flex-col h-full bg-card border-r;
+  }
+
+  .sidebar-header {
+    @apply flex items-center justify-between p-4 border-b;
+  }
+
+  .sidebar-content {
+    @apply flex-1 overflow-y-auto p-2;
+  }
+
+  .sidebar-footer {
+    @apply p-4 border-t;
+  }
+
+  .sidebar-item {
+    @apply flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground cursor-pointer;
+  }
+
+  .sidebar-item-active {
+    @apply bg-accent text-accent-foreground;
+  }
+}
+
+@layer utilities {
+  /* Hide scrollbar */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Truncate with multiple lines */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Safe area insets for mobile */
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .safe-left {
+    padding-left: env(safe-area-inset-left);
+  }
+
+  .safe-right {
+    padding-right: env(safe-area-inset-right);
+  }
+
+  /* Glass morphism effect */
+  .glass {
+    @apply bg-background/80 backdrop-blur-sm;
+  }
+
+  /* Text balance */
+  .text-balance {
+    text-wrap: balance;
+  }
+}

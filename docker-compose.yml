@@ -1,30 +1,18 @@
 services:
-  memgraph:
-    image: memgraph/memgraph-mage
-    environment:
-      - username=memgraph
-      - password=password
-    ports:
-      - "7687:7687"
-      - "7444:7444"
-    networks:
-      - backend
-
-  lab:
-    image: memgraph/lab
-    ports:
-      - "3000:3000"
-    environment:
-      QUICK_CONNECT_MG_HOST: memgraph
-    networks:
-      - backend
+  # ===========================================================================
+  # Database Services
+  # ===========================================================================
 
   vector-db:
     image: qdrant/qdrant
+    container_name: qdrant
     ports:
-      - 6333:6333
+      - "6333:6333"
+    volumes:
+      - ./data/qdrant:/qdrant/storage
     networks:
       - backend
+    restart: unless-stopped
 
   valkey:
     image: valkey/valkey
@@ -32,27 +20,183 @@ services:
     command: valkey-server --requirepass mempass
     ports:
       - "6378:6379"
+    volumes:
+      - ./data/valkey:/data
     networks:
       - backend
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "valkey-cli", "-a", "mempass", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
-  worker:
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=ragadmin
+      - POSTGRES_PASSWORD=ragpassword
+      - POSTGRES_DB=rag_auth
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    networks:
+      - backend
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ragadmin -d rag_auth"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  neo4j:
+    image: neo4j:5-community
+    container_name: neo4j
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      - NEO4J_AUTH=neo4j/neo4jpassword
+    healthcheck:
+      test: ["CMD-SHELL", "neo4j status || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    volumes:
+      - ./data/neo4j/conf:/conf
+      - ./data/neo4j/data:/data
+      - ./data/neo4j/logs:/logs
+      - ./data/neo4j/plugins:/plugins
+    networks:
+      - backend
+    restart: unless-stopped
+
+  # ===========================================================================
+  # Application Services
+  # ===========================================================================
+
+  backend:
     build:
       context: .
-      dockerfile: dockerfile.worker
+      dockerfile: dockerfile.backend
+    container_name: rag-backend
     working_dir: /app
+    ports:
+      - "8000:8000"
     depends_on:
-      - valkey
-      - memgraph
+      valkey:
+        condition: service_healthy
+      neo4j:
+        condition: service_healthy
+      vector-db:
+        condition: service_started
+      postgres:
+        condition: service_healthy
     environment:
-      - PYTHONPATH=/app
+      - IN_DOCKER=1
       - OLLAMA_HOST=http://host.docker.internal:11434
-      - MEMGRAPH_HOST=memgraph
+      - NEO4J_HOST=neo4j
+      - QDRANT_HOST=vector-db
+      - QDRANT_PORT=6333
+      - REDIS_HOST=valkey
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=mempass
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=ragadmin
+      - POSTGRES_PASSWORD=ragpassword
+      - POSTGRES_DB=rag_auth
+      - JWT_SECRET_KEY=your-super-secret-key-change-in-production
+      - JWT_ALGORITHM=HS256
+      - JWT_EXPIRE_MINUTES=1440
     networks:
       - backend
     restart: unless-stopped
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  worker:
+    build:
+      context: .
+      dockerfile: dockerfile.worker
+    container_name: rag-worker
+    working_dir: /app
+    depends_on:
+      valkey:
+        condition: service_healthy
+      neo4j:
+        condition: service_healthy
+      vector-db:
+        condition: service_started
+      backend:
+        condition: service_healthy
+    environment:
+      - IN_DOCKER=1
+      - OLLAMA_HOST=http://host.docker.internal:11434
+      - NEO4J_HOST=neo4j
+      - QDRANT_HOST=vector-db
+      - QDRANT_PORT=6333
+      - REDIS_HOST=valkey
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=mempass
+    networks:
+      - backend
+    restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          memory: 2G
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: rag-frontend
+    ports:
+      - "3001:3001"
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+      - NODE_ENV=production
+      - BACKEND_URL=http://backend:8000
+      - NEXT_PUBLIC_APP_NAME=RAG Assistant
+      - PORT=3001
+      - HOSTNAME=0.0.0.0
+    networks:
+      - backend
+    restart: unless-stopped
+
+# =============================================================================
+# Networks
+# =============================================================================
 
 networks:
   backend:
     driver: bridge
+
+# =============================================================================
+# Volumes
+# =============================================================================
+
+volumes:
+  qdrant_data:
+    name: rag_qdrant_data
+  memgraph_data:
+    name: rag_memgraph_data
+  valkey_data:
+    name: rag_valkey_data
+  postgres_data:
+    name: rag_postgres_data
