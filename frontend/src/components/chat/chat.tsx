@@ -146,7 +146,7 @@ export function Chat() {
         {error && <ErrorBanner message={error} onDismiss={clearError} />}
 
         {/* Messages */}
-        <div className="flex-1 min-h-0 overflow-hidden">
+        <div className="flex-1 min-h-0 overflow-hidden flex flex-col">
           {activeConversationId ? (
             <MessageList
               messages={messages}
@@ -155,6 +155,7 @@ export function Chat() {
               showAvatars={true}
               showTimestamps={true}
               autoScroll={true}
+              className="h-full"
             />
           ) : (
             <WelcomeScreen

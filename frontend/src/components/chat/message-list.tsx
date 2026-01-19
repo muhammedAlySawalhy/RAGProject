@@ -136,12 +136,11 @@ export function MessageList({
   }
 
   return (
-    <div className={cn('relative flex-1 min-h-0', className)}>
+    <div className={cn('relative flex-1 min-h-0 h-full flex flex-col', className)}>
       {/* Scrollable message container */}
       <div
         ref={scrollContainerRef}
-        className="h-full overflow-y-auto overscroll-contain"
-        style={{ maxHeight: '100%' }}
+        className="flex-1 overflow-y-auto overscroll-contain"
       >
         <div className="mx-auto max-w-3xl py-4 px-4">
           {/* Message groups */}

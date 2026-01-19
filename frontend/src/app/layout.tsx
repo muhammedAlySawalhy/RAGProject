@@ -66,7 +66,7 @@ export default function RootLayout({
         {/* Client-side providers */}
         <Providers>
           {/* Main application content */}
-          <div className="relative flex min-h-screen flex-col">{children}</div>
+          <div className="h-screen overflow-hidden">{children}</div>
         </Providers>
 
         {/* Toast notifications portal (for future use) */}
