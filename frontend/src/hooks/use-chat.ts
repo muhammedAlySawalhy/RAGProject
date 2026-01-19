@@ -96,9 +96,9 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
 
       try {
         const result = await pollJobUntilComplete(jobId, {
-          initialInterval: pollOptions.initialInterval ?? 500,
-          maxInterval: pollOptions.maxInterval ?? 3000,
-          timeout: pollOptions.timeout ?? 120000,
+          initialInterval: pollOptions.initialInterval ?? 1000,
+          maxInterval: pollOptions.maxInterval ?? 5000,
+          timeout: pollOptions.timeout ?? 180000,
           onPoll: (attempt, status) => {
             // Update pending job with poll count
             useChatStore.getState().updatePendingJob(jobId, {
@@ -131,9 +131,9 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
           err instanceof ChatError
             ? err
             : new ChatError(
-                err instanceof Error ? err.message : "Unknown error",
-                "POLL_ERROR",
-              );
+              err instanceof Error ? err.message : "Unknown error",
+              "POLL_ERROR",
+            );
 
         // Update message with error status
         updateMessage(conversationId, assistantMessageId, {
@@ -220,9 +220,9 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
           err instanceof ChatError
             ? err
             : new ChatError(
-                err instanceof Error ? err.message : "Failed to send message",
-                "SEND_ERROR",
-              );
+              err instanceof Error ? err.message : "Failed to send message",
+              "SEND_ERROR",
+            );
 
         // Update assistant message with error
         updateMessage(conversationId, assistantMessageId, {
@@ -315,9 +315,9 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
           err instanceof ChatError
             ? err
             : new ChatError(
-                err instanceof Error ? err.message : "Failed to retry message",
-                "RETRY_ERROR",
-              );
+              err instanceof Error ? err.message : "Failed to retry message",
+              "RETRY_ERROR",
+            );
 
         updateMessage(conversation.id, assistantMessage.id, {
           content: `Error: ${chatError.message}`,

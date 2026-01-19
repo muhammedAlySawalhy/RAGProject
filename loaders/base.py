@@ -50,9 +50,14 @@ class LoaderResult:
 
 
 class BaseDocumentLoader(ABC):
+    """
+    Base class for document loaders.
+    
+    Increased chunk size (2000) for better performance with large documents.
+    Larger chunks = fewer vectors = faster ingestion and search.
+    """
 
-
-    DEFAULT_CHUNK_SIZE = 1000
+    DEFAULT_CHUNK_SIZE = 2000  # Increased from 1000 for better performance
     DEFAULT_CHUNK_OVERLAP = 200
 
     def __init__(

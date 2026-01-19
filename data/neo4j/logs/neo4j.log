@@ -1,28 +1,195 @@
-2026-01-19 04:04:43.800+0000 INFO  Logging config in use: Embedded default config 'default-user-logs.xml'
-2026-01-19 04:04:43.820+0000 INFO  Starting...
-2026-01-19 04:04:45.947+0000 INFO  This instance is ServerId{9cbd3937} (9cbd3937-de0b-4e13-9ee0-310f1a9aad36)
-2026-01-19 04:04:48.326+0000 INFO  ======== Neo4j 5.26.19 ========
-2026-01-19 04:04:54.860+0000 INFO  Anonymous Usage Data is being sent to Neo4j, see https://neo4j.com/docs/usage-data/
-2026-01-19 04:04:54.960+0000 INFO  Bolt enabled on 0.0.0.0:7687.
-2026-01-19 04:04:56.629+0000 INFO  HTTP enabled on 0.0.0.0:7474.
-2026-01-19 04:04:56.632+0000 INFO  Remote interface available at http://localhost:7474/
-2026-01-19 04:04:56.640+0000 INFO  id: 1ACC56BF3884D011C56942D465BB3F2CAE0E18CB4CC78A4B4675FA9E0F06246A
-2026-01-19 04:04:56.642+0000 INFO  name: system
-2026-01-19 04:04:56.643+0000 INFO  creationDate: 2026-01-19T04:04:51.086Z
-2026-01-19 04:04:56.645+0000 INFO  Started.
-2026-01-19 04:06:04.515+0000 INFO  Neo4j Server shutdown initiated by request
-2026-01-19 04:06:04.517+0000 INFO  Stopping...
-2026-01-19 04:06:21.121+0000 INFO  Logging config in use: Embedded default config 'default-user-logs.xml'
-2026-01-19 04:06:21.138+0000 INFO  Starting...
-2026-01-19 04:06:23.380+0000 INFO  This instance is ServerId{9cbd3937} (9cbd3937-de0b-4e13-9ee0-310f1a9aad36)
-2026-01-19 04:06:25.744+0000 INFO  ======== Neo4j 5.26.19 ========
-2026-01-19 04:06:32.713+0000 INFO  Anonymous Usage Data is being sent to Neo4j, see https://neo4j.com/docs/usage-data/
-2026-01-19 04:06:32.805+0000 INFO  Bolt enabled on 0.0.0.0:7687.
-2026-01-19 04:06:35.067+0000 INFO  HTTP enabled on 0.0.0.0:7474.
-2026-01-19 04:06:35.070+0000 INFO  Remote interface available at http://localhost:7474/
-2026-01-19 04:06:35.080+0000 INFO  id: 1ACC56BF3884D011C56942D465BB3F2CAE0E18CB4CC78A4B4675FA9E0F06246A
-2026-01-19 04:06:35.081+0000 INFO  name: system
-2026-01-19 04:06:35.083+0000 INFO  creationDate: 2026-01-19T04:04:51.086Z
-2026-01-19 04:06:35.085+0000 INFO  Started.
-2026-01-19 04:17:11.675+0000 INFO  Neo4j Server shutdown initiated by request
-2026-01-19 04:17:11.680+0000 INFO  Stopping...
+2026-01-19 13:33:59.211+0000 INFO  Logging config in use: Embedded default config 'default-user-logs.xml'
+2026-01-19 13:33:59.219+0000 INFO  Starting...
+2026-01-19 13:34:00.267+0000 INFO  This instance is ServerId{834730a9} (834730a9-0456-4776-8760-ea09ba65b883)
+2026-01-19 13:34:02.083+0000 INFO  ======== Neo4j 5.26.19 ========
+2026-01-19 13:34:04.732+0000 INFO  Anonymous Usage Data is being sent to Neo4j, see https://neo4j.com/docs/usage-data/
+2026-01-19 13:34:04.774+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2026-01-19 13:34:05.883+0000 INFO  HTTP enabled on 0.0.0.0:7474.
+2026-01-19 13:34:05.885+0000 INFO  Remote interface available at http://localhost:7474/
+2026-01-19 13:34:05.891+0000 INFO  id: 4C772B13B4FB296090E7161FBBBE09FCCAEFB01D4DAA17928D9D2E09A6447124
+2026-01-19 13:34:05.892+0000 INFO  name: system
+2026-01-19 13:34:05.892+0000 INFO  creationDate: 2026-01-19T13:34:03.628Z
+2026-01-19 13:34:05.892+0000 INFO  Started.
+2026-01-19 13:36:17.287+0000 INFO  Neo4j Server shutdown initiated by request
+2026-01-19 13:36:17.289+0000 INFO  Stopping...
+2026-01-19 13:36:36.765+0000 INFO  Logging config in use: Embedded default config 'default-user-logs.xml'
+2026-01-19 13:36:36.773+0000 INFO  Starting...
+2026-01-19 13:36:38.214+0000 INFO  This instance is ServerId{834730a9} (834730a9-0456-4776-8760-ea09ba65b883)
+2026-01-19 13:36:39.872+0000 INFO  ======== Neo4j 5.26.19 ========
+2026-01-19 13:36:41.961+0000 INFO  Anonymous Usage Data is being sent to Neo4j, see https://neo4j.com/docs/usage-data/
+2026-01-19 13:36:42.005+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2026-01-19 13:36:43.283+0000 INFO  HTTP enabled on 0.0.0.0:7474.
+2026-01-19 13:36:43.284+0000 INFO  Remote interface available at http://localhost:7474/
+2026-01-19 13:36:43.289+0000 INFO  id: 4C772B13B4FB296090E7161FBBBE09FCCAEFB01D4DAA17928D9D2E09A6447124
+2026-01-19 13:36:43.289+0000 INFO  name: system
+2026-01-19 13:36:43.289+0000 INFO  creationDate: 2026-01-19T13:34:03.628Z
+2026-01-19 13:36:43.290+0000 INFO  Started.
+2026-01-19 13:38:24.056+0000 INFO  Neo4j Server shutdown initiated by request
+2026-01-19 13:38:24.057+0000 INFO  Stopping...
+2026-01-19 13:38:46.781+0000 INFO  Logging config in use: Embedded default config 'default-user-logs.xml'
+2026-01-19 13:38:46.789+0000 INFO  Starting...
+2026-01-19 13:38:47.876+0000 INFO  This instance is ServerId{834730a9} (834730a9-0456-4776-8760-ea09ba65b883)
+2026-01-19 13:38:49.322+0000 INFO  ======== Neo4j 5.26.19 ========
+2026-01-19 13:38:51.766+0000 INFO  Anonymous Usage Data is being sent to Neo4j, see https://neo4j.com/docs/usage-data/
+2026-01-19 13:38:51.813+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2026-01-19 13:38:52.727+0000 INFO  HTTP enabled on 0.0.0.0:7474.
+2026-01-19 13:38:52.728+0000 INFO  Remote interface available at http://localhost:7474/
+2026-01-19 13:38:52.731+0000 INFO  id: 4C772B13B4FB296090E7161FBBBE09FCCAEFB01D4DAA17928D9D2E09A6447124
+2026-01-19 13:38:52.732+0000 INFO  name: system
+2026-01-19 13:38:52.732+0000 INFO  creationDate: 2026-01-19T13:34:03.628Z
+2026-01-19 13:38:52.732+0000 INFO  Started.
+2026-01-19 13:43:50.122+0000 WARN  [bolt-0] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 13:43:54.487+0000 WARN  [bolt-1] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 13:43:59.118+0000 WARN  [bolt-2] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 13:44:04.296+0000 WARN  [bolt-3] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 13:44:09.759+0000 WARN  [bolt-4] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 13:44:15.940+0000 WARN  [bolt-5] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 13:44:24.185+0000 WARN  [bolt-6] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 13:44:35.962+0000 WARN  [bolt-7] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 13:44:53.952+0000 WARN  [bolt-8] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 13:45:23.757+0000 WARN  [bolt-9] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 13:46:19.552+0000 WARN  [bolt-10] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 13:47:24.231+0000 WARN  [bolt-11] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 13:48:29.486+0000 WARN  [bolt-12] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 13:49:34.327+0000 WARN  [bolt-13] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 13:50:25.599+0000 WARN  [bolt-14] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 13:50:30.418+0000 WARN  [bolt-15] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 13:50:35.659+0000 WARN  [bolt-16] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 13:50:40.690+0000 WARN  [bolt-17] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 13:50:46.836+0000 WARN  [bolt-18] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 13:50:52.921+0000 WARN  [bolt-19] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 13:51:00.981+0000 WARN  [bolt-20] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 13:51:11.687+0000 WARN  [bolt-21] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 13:51:29.039+0000 WARN  [bolt-22] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 13:51:59.368+0000 WARN  [bolt-23] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 13:52:55.374+0000 WARN  [bolt-24] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 13:54:00.294+0000 WARN  [bolt-25] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 13:55:04.876+0000 WARN  [bolt-26] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 13:55:34.364+0000 INFO  Neo4j Server shutdown initiated by request
+2026-01-19 13:55:34.365+0000 INFO  Stopping...
+2026-01-19 13:55:48.662+0000 INFO  Logging config in use: Embedded default config 'default-user-logs.xml'
+2026-01-19 13:55:48.671+0000 INFO  Starting...
+2026-01-19 13:55:49.710+0000 INFO  This instance is ServerId{834730a9} (834730a9-0456-4776-8760-ea09ba65b883)
+2026-01-19 13:55:50.978+0000 INFO  ======== Neo4j 5.26.19 ========
+2026-01-19 13:55:53.346+0000 INFO  Anonymous Usage Data is being sent to Neo4j, see https://neo4j.com/docs/usage-data/
+2026-01-19 13:55:53.413+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2026-01-19 13:55:54.518+0000 INFO  HTTP enabled on 0.0.0.0:7474.
+2026-01-19 13:55:54.519+0000 INFO  Remote interface available at http://localhost:7474/
+2026-01-19 13:55:54.522+0000 INFO  id: 4C772B13B4FB296090E7161FBBBE09FCCAEFB01D4DAA17928D9D2E09A6447124
+2026-01-19 13:55:54.522+0000 INFO  name: system
+2026-01-19 13:55:54.522+0000 INFO  creationDate: 2026-01-19T13:34:03.628Z
+2026-01-19 13:55:54.523+0000 INFO  Started.
+2026-01-19 14:10:39.611+0000 INFO  Neo4j Server shutdown initiated by request
+2026-01-19 14:10:39.612+0000 INFO  Stopping...
+2026-01-19 14:10:53.958+0000 INFO  Logging config in use: Embedded default config 'default-user-logs.xml'
+2026-01-19 14:10:53.965+0000 INFO  Starting...
+2026-01-19 14:10:54.978+0000 INFO  This instance is ServerId{834730a9} (834730a9-0456-4776-8760-ea09ba65b883)
+2026-01-19 14:10:56.458+0000 INFO  ======== Neo4j 5.26.19 ========
+2026-01-19 14:10:59.223+0000 INFO  Anonymous Usage Data is being sent to Neo4j, see https://neo4j.com/docs/usage-data/
+2026-01-19 14:10:59.318+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2026-01-19 14:11:00.794+0000 INFO  HTTP enabled on 0.0.0.0:7474.
+2026-01-19 14:11:00.795+0000 INFO  Remote interface available at http://localhost:7474/
+2026-01-19 14:11:00.799+0000 INFO  id: 4C772B13B4FB296090E7161FBBBE09FCCAEFB01D4DAA17928D9D2E09A6447124
+2026-01-19 14:11:00.799+0000 INFO  name: system
+2026-01-19 14:11:00.799+0000 INFO  creationDate: 2026-01-19T13:34:03.628Z
+2026-01-19 14:11:00.800+0000 INFO  Started.
+2026-01-19 14:11:01.118+0000 WARN  [bolt-0] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 14:11:06.132+0000 WARN  [bolt-1] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 14:11:11.209+0000 WARN  [bolt-2] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 14:11:17.348+0000 WARN  [bolt-3] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 14:11:23.229+0000 WARN  [bolt-4] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 14:11:29.856+0000 WARN  [bolt-5] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 14:11:37.766+0000 WARN  [bolt-6] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 14:11:49.201+0000 WARN  [bolt-7] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 14:12:06.866+0000 WARN  [bolt-8] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 14:12:36.961+0000 WARN  [bolt-9] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 14:13:32.348+0000 WARN  [bolt-10] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 14:13:41.595+0000 INFO  Neo4j Server shutdown initiated by request
+2026-01-19 14:13:41.595+0000 INFO  Stopping...
+2026-01-19 14:14:09.350+0000 INFO  Logging config in use: Embedded default config 'default-user-logs.xml'
+2026-01-19 14:14:09.359+0000 INFO  Starting...
+2026-01-19 14:14:10.496+0000 INFO  This instance is ServerId{834730a9} (834730a9-0456-4776-8760-ea09ba65b883)
+2026-01-19 14:14:12.282+0000 INFO  ======== Neo4j 5.26.19 ========
+2026-01-19 14:14:14.448+0000 INFO  Anonymous Usage Data is being sent to Neo4j, see https://neo4j.com/docs/usage-data/
+2026-01-19 14:14:14.491+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2026-01-19 14:14:15.459+0000 INFO  HTTP enabled on 0.0.0.0:7474.
+2026-01-19 14:14:15.460+0000 INFO  Remote interface available at http://localhost:7474/
+2026-01-19 14:14:15.463+0000 INFO  id: 4C772B13B4FB296090E7161FBBBE09FCCAEFB01D4DAA17928D9D2E09A6447124
+2026-01-19 14:14:15.464+0000 INFO  name: system
+2026-01-19 14:14:15.464+0000 INFO  creationDate: 2026-01-19T13:34:03.628Z
+2026-01-19 14:14:15.464+0000 INFO  Started.
+2026-01-19 14:14:37.598+0000 WARN  [bolt-0] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 14:14:42.019+0000 WARN  [bolt-1] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 14:14:46.381+0000 WARN  [bolt-2] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 14:14:50.831+0000 WARN  [bolt-3] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 14:14:56.412+0000 WARN  [bolt-4] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 14:15:03.346+0000 WARN  [bolt-5] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 14:15:11.668+0000 WARN  [bolt-6] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 14:15:22.510+0000 WARN  [bolt-7] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 14:15:41.151+0000 WARN  [bolt-8] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 14:16:11.641+0000 WARN  [bolt-9] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 14:16:24.678+0000 INFO  Neo4j Server shutdown initiated by request
+2026-01-19 14:16:24.679+0000 INFO  Stopping...
+2026-01-19 14:16:45.725+0000 INFO  Logging config in use: Embedded default config 'default-user-logs.xml'
+2026-01-19 14:16:45.733+0000 INFO  Starting...
+2026-01-19 14:16:46.995+0000 INFO  This instance is ServerId{834730a9} (834730a9-0456-4776-8760-ea09ba65b883)
+2026-01-19 14:16:48.726+0000 INFO  ======== Neo4j 5.26.19 ========
+2026-01-19 14:16:50.856+0000 INFO  Anonymous Usage Data is being sent to Neo4j, see https://neo4j.com/docs/usage-data/
+2026-01-19 14:16:50.904+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2026-01-19 14:16:51.898+0000 INFO  HTTP enabled on 0.0.0.0:7474.
+2026-01-19 14:16:51.899+0000 INFO  Remote interface available at http://localhost:7474/
+2026-01-19 14:16:51.902+0000 INFO  id: 4C772B13B4FB296090E7161FBBBE09FCCAEFB01D4DAA17928D9D2E09A6447124
+2026-01-19 14:16:51.903+0000 INFO  name: system
+2026-01-19 14:16:51.903+0000 INFO  creationDate: 2026-01-19T13:34:03.628Z
+2026-01-19 14:16:51.903+0000 INFO  Started.
+2026-01-19 14:17:14.730+0000 WARN  [bolt-0] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 14:17:19.291+0000 WARN  [bolt-1] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 14:17:23.388+0000 WARN  [bolt-2] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 14:17:28.816+0000 WARN  [bolt-3] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 14:17:34.159+0000 WARN  [bolt-4] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 14:17:40.642+0000 WARN  [bolt-5] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 14:17:48.360+0000 WARN  [bolt-6] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 14:17:59.536+0000 WARN  [bolt-7] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 14:18:16.855+0000 WARN  [bolt-8] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 14:18:46.691+0000 WARN  [bolt-9] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 14:19:41.776+0000 WARN  [bolt-10] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 14:20:46.251+0000 WARN  [bolt-11] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 14:21:50.423+0000 WARN  [bolt-12] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 14:22:55.209+0000 WARN  [bolt-13] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 14:24:00.133+0000 WARN  [bolt-14] Unsupported authentication token, scheme 'bearer' is not supported.
+2026-01-19 14:29:32.471+0000 INFO  Logging config in use: Embedded default config 'default-user-logs.xml'
+2026-01-19 14:29:32.478+0000 INFO  Starting...
+2026-01-19 14:29:33.506+0000 INFO  This instance is ServerId{834730a9} (834730a9-0456-4776-8760-ea09ba65b883)
+2026-01-19 14:29:34.931+0000 INFO  ======== Neo4j 5.26.19 ========
+2026-01-19 14:29:36.880+0000 INFO  Anonymous Usage Data is being sent to Neo4j, see https://neo4j.com/docs/usage-data/
+2026-01-19 14:29:36.923+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2026-01-19 14:29:37.753+0000 INFO  HTTP enabled on 0.0.0.0:7474.
+2026-01-19 14:29:37.754+0000 INFO  Remote interface available at http://localhost:7474/
+2026-01-19 14:29:37.757+0000 INFO  id: 4C772B13B4FB296090E7161FBBBE09FCCAEFB01D4DAA17928D9D2E09A6447124
+2026-01-19 14:29:37.757+0000 INFO  name: system
+2026-01-19 14:29:37.757+0000 INFO  creationDate: 2026-01-19T13:34:03.628Z
+2026-01-19 14:29:37.758+0000 INFO  Started.
+2026-01-19 14:42:51.988+0000 INFO  Logging config in use: Embedded default config 'default-user-logs.xml'
+2026-01-19 14:42:51.995+0000 INFO  Starting...
+2026-01-19 14:42:53.325+0000 INFO  This instance is ServerId{834730a9} (834730a9-0456-4776-8760-ea09ba65b883)
+2026-01-19 14:42:55.190+0000 INFO  ======== Neo4j 5.26.19 ========
+2026-01-19 14:42:57.816+0000 INFO  Anonymous Usage Data is being sent to Neo4j, see https://neo4j.com/docs/usage-data/
+2026-01-19 14:42:57.863+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2026-01-19 14:42:58.744+0000 INFO  HTTP enabled on 0.0.0.0:7474.
+2026-01-19 14:42:58.745+0000 INFO  Remote interface available at http://localhost:7474/
+2026-01-19 14:42:58.749+0000 INFO  id: 4C772B13B4FB296090E7161FBBBE09FCCAEFB01D4DAA17928D9D2E09A6447124
+2026-01-19 14:42:58.749+0000 INFO  name: system
+2026-01-19 14:42:58.749+0000 INFO  creationDate: 2026-01-19T13:34:03.628Z
+2026-01-19 14:42:58.749+0000 INFO  Started.
+2026-01-19 15:22:52.439+0000 INFO  Logging config in use: Embedded default config 'default-user-logs.xml'
+2026-01-19 15:22:52.453+0000 INFO  Starting...
+2026-01-19 15:22:53.657+0000 INFO  This instance is ServerId{834730a9} (834730a9-0456-4776-8760-ea09ba65b883)
+2026-01-19 15:22:55.059+0000 INFO  ======== Neo4j 5.26.19 ========
+2026-01-19 15:22:57.094+0000 INFO  Anonymous Usage Data is being sent to Neo4j, see https://neo4j.com/docs/usage-data/
+2026-01-19 15:22:57.137+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2026-01-19 15:22:58.057+0000 INFO  HTTP enabled on 0.0.0.0:7474.
+2026-01-19 15:22:58.058+0000 INFO  Remote interface available at http://localhost:7474/
+2026-01-19 15:22:58.061+0000 INFO  id: 4C772B13B4FB296090E7161FBBBE09FCCAEFB01D4DAA17928D9D2E09A6447124
+2026-01-19 15:22:58.061+0000 INFO  name: system
+2026-01-19 15:22:58.061+0000 INFO  creationDate: 2026-01-19T13:34:03.628Z
+2026-01-19 15:22:58.061+0000 INFO  Started.

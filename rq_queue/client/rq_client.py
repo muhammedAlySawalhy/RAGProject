@@ -8,6 +8,7 @@ REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
 REDIS_PORT = int(os.getenv("REDIS_PORT", "6379"))
 REDIS_PASSWORD = os.getenv("REDIS_PASSWORD", "mempass")
 
-queue = Queue(
-    connection=Redis(host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASSWORD)
-)
+
+redis_conn = Redis(host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASSWORD)
+
+queue = Queue(connection=redis_conn)

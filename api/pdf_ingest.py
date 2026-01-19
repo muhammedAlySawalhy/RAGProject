@@ -8,23 +8,91 @@ Supports:
     - PDF files (.pdf)
     - Excel files (.xlsx, .xls)
     - Extensible for future document types
+    
+Ingestion modes:
+    - Sync: Small files processed immediately
+    - Async: Large files queued for background processing
 """
 
 import os
 import re
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from fastapi import APIRouter, Depends, File, Header, HTTPException, Query, UploadFile, status
 
 from api.auth import CurrentUser, get_current_user
 from loaders import DocumentLoaderFactory
 from memory import mem_client, qdrant_manager
+from rq_queue.client.rq_client import queue
+from rq_queue.queues.worker import process_document_ingestion
+import logging
+
+logger = logging.getLogger(__name__)
 
 DOCUMENT_SOURCE = "document"
+
+
+ASYNC_THRESHOLD_BYTES = 1 * 1024 * 1024  # 1MB
+
+
+MAX_WORKERS = 5
 
 router = APIRouter()
 
 
+def _store_single_chunk(
+    doc,
+    filename: str,
+    user_id: str,
+    username: str,
+    document_type: str,
+    chunk_index: int,
+) -> tuple[int, bool, str | None]:
+    """
+    Store a single document chunk to mem0.
+    Returns: (chunk_index, success, error_message)
+    """
+    if doc.is_empty():
+        return (chunk_index, True, None)
+
+    message = {
+        "role": "user",
+        "content": (
+            f"Document: {filename}\n"
+            f"Page/Sheet: {doc.page}\n"
+            f"Content:\n{doc.content}"
+        ),
+    }
+
+    try:
+        mem_client.add(
+            [message],
+            user_id=user_id,
+            infer=False,  # Fast storage - embeddings only, no LLM extraction
+            metadata={
+                "source": DOCUMENT_SOURCE,
+                "filename": filename,
+                "page": doc.page,
+                "document_type": document_type,
+                "owner_id": user_id,
+                "owner_username": username,
+                **doc.metadata,
+            },
+        )
+        return (chunk_index, True, None)
+    except Exception as e:
+        error_msg = str(e)
+        logger.error(f"Failed to store chunk {chunk_index}: {error_msg}")
+        return (chunk_index, False, error_msg)
+
+
 def _ingest_file_content(content: bytes, filename: str, current_user: CurrentUser):
+    """
+    Ingest document content into the vector store using ThreadPoolExecutor.
+    
+    Uses concurrent processing to embed and store chunks in parallel,
+    significantly improving performance for documents with many chunks.
+    """
     # Check if file type is supported
     if not DocumentLoaderFactory.is_supported(filename):
         supported = DocumentLoaderFactory.get_supported_extensions()
@@ -39,6 +107,7 @@ def _ingest_file_content(content: bytes, filename: str, current_user: CurrentUse
             detail="Uploaded file is empty",
         )
 
+    logger.info(f"Loading document: {filename} ({len(content)} bytes)")
     result = DocumentLoaderFactory.load_document(content, filename)
 
     if not result.success:
@@ -47,46 +116,113 @@ def _ingest_file_content(content: bytes, filename: str, current_user: CurrentUse
             detail=result.error or "Failed to parse document",
         )
 
-    ingested = 0
-    for doc in result.documents:
-        if doc.is_empty():
-            continue
+    total_chunks = len(result.documents)
+    logger.info(f"Document loaded: {total_chunks} chunks from {result.total_pages} pages")
 
-        message = {
-            "role": "user",
-            "content": (
-                f"Document: {filename}\n"
-                f"Page/Sheet: {doc.page}\n"
-                f"Content:\n{doc.content}"
-            ),
+    if total_chunks == 0:
+        return {
+            "status": "success",
+            "filename": filename,
+            "document_type": result.document_type.value,
+            "total_pages": result.total_pages,
+            "chunks_total": 0,
+            "chunks_ingested": 0,
+            "user_id": current_user.user_id,
+            "metadata": result.metadata,
         }
 
-        # Store with user_id from authenticated user - ensuring data isolation
-        mem_client.add(
-            [message],
-            user_id=current_user.user_id,
-            infer=False,
-            metadata={
-                "source": DOCUMENT_SOURCE,
-                "filename": filename,
-                "page": doc.page,
-                "document_type": result.document_type.value,
-                "owner_id": current_user.user_id,
-                "owner_username": current_user.username,
-                **doc.metadata,  # Include any loader-specific metadata
-            },
-        )
-        ingested += 1
+    # Process chunks concurrently using ThreadPoolExecutor
+    ingested = 0
+    failed = 0
+    
+    logger.info(f"Starting concurrent ingestion with {MAX_WORKERS} threads")
+    
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+        # Submit all chunks to the thread pool
+        futures = {
+            executor.submit(
+                _store_single_chunk,
+                doc,
+                filename,
+                current_user.user_id,
+                current_user.username,
+                result.document_type.value,
+                idx,
+            ): idx
+            for idx, doc in enumerate(result.documents)
+        }
+        
+        # Process completed futures as they finish
+        completed = 0
+        for future in as_completed(futures):
+            chunk_idx, success, error = future.result()
+            completed += 1
+            
+            if success:
+                ingested += 1
+            else:
+                failed += 1
+            
+            # Log progress every 10% or every 20 chunks
+            if completed % max(1, total_chunks // 10) == 0 or completed % 20 == 0:
+                progress = (completed / total_chunks) * 100
+                logger.info(
+                    f"Ingestion progress: {progress:.1f}% "
+                    f"({ingested} stored, {failed} failed, {completed}/{total_chunks} processed)"
+                )
+
+    logger.info(f"Completed ingestion: {ingested}/{total_chunks} chunks stored, {failed} failed")
 
     return {
-        "status": "success",
+        "status": "success" if failed == 0 else "partial",
         "filename": filename,
         "document_type": result.document_type.value,
         "total_pages": result.total_pages,
-        "chunks_total": len(result.documents),
+        "chunks_total": total_chunks,
         "chunks_ingested": ingested,
+        "chunks_failed": failed,
         "user_id": current_user.user_id,
         "metadata": result.metadata,
+    }
+
+
+def _enqueue_document_ingestion(content: bytes, filename: str, current_user: CurrentUser):
+    """
+    Enqueue document for background processing.
+    Returns a job ID that can be polled for status.
+    """
+    # Validate file type first (fast check)
+    if not DocumentLoaderFactory.is_supported(filename):
+        supported = DocumentLoaderFactory.get_supported_extensions()
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Unsupported file type. Supported extensions: {', '.join(supported)}",
+        )
+
+    if len(content) == 0:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Uploaded file is empty",
+        )
+
+    logger.info(f"Enqueuing document for background processing: {filename} ({len(content)} bytes)")
+    
+    # Enqueue the job
+    job = queue.enqueue(
+        process_document_ingestion,
+        content,
+        filename,
+        current_user.user_id,
+        current_user.username,
+        job_timeout=600,  # 10 minute timeout for large files
+    )
+    
+    return {
+        "status": "queued",
+        "job_id": job.id,
+        "filename": filename,
+        "file_size": len(content),
+        "message": "Document queued for processing. Poll /ingest-status for progress.",
     }
 
 
@@ -98,6 +234,7 @@ def _ingest_file_content(content: bytes, filename: str, current_user: CurrentUse
 @router.post("/ingest")
 async def ingest_document(
     file: UploadFile = File(...),
+    async_mode: bool = Query(False, description="Force async processing"),
     current_user: CurrentUser = Depends(get_current_user),
 ):
     """
@@ -107,12 +244,83 @@ async def ingest_document(
         - PDF (.pdf)
         - Excel (.xlsx, .xls)
 
+    Small files (<1MB) are processed synchronously.
+    Large files are automatically queued for background processing.
+    Use async_mode=true to force background processing.
+
     The document is chunked and stored in the user's memory space.
     Only the authenticated user can later retrieve these documents.
     """
     filename = file.filename or "unknown"
     content = await file.read()
+    
+    # Use async for large files or if explicitly requested
+    if async_mode or len(content) > ASYNC_THRESHOLD_BYTES:
+        return _enqueue_document_ingestion(content, filename, current_user)
+    
     return _ingest_file_content(content, filename, current_user)
+
+
+@router.post("/ingest-async")
+async def ingest_document_async(
+    file: UploadFile = File(...),
+    current_user: CurrentUser = Depends(get_current_user),
+):
+    """
+    Ingest a document asynchronously (background processing).
+    
+    Always queues the document for background processing regardless of size.
+    Returns a job_id that can be polled via /ingest-status endpoint.
+    """
+    filename = file.filename or "unknown"
+    content = await file.read()
+    return _enqueue_document_ingestion(content, filename, current_user)
+
+
+@router.get("/ingest-status")
+async def get_ingest_status(
+    job_id: str = Query(..., description="Job ID from ingest-async"),
+    current_user: CurrentUser = Depends(get_current_user),
+):
+    """
+    Get the status of an async document ingestion job.
+    """
+    from rq.job import Job, JobStatus
+    from rq_queue.client.rq_client import redis_conn
+    
+    try:
+        job = Job.fetch(job_id, connection=redis_conn)
+    except Exception:
+        return {
+            "status": "not_found",
+            "job_id": job_id,
+            "error": "Job not found or expired",
+        }
+    
+    status_map = {
+        JobStatus.QUEUED: "queued",
+        JobStatus.STARTED: "processing",
+        JobStatus.FINISHED: "finished",
+        JobStatus.FAILED: "failed",
+        JobStatus.DEFERRED: "deferred",
+        JobStatus.SCHEDULED: "scheduled",
+        JobStatus.STOPPED: "stopped",
+        JobStatus.CANCELED: "canceled",
+    }
+    
+    job_status = status_map.get(job.get_status(), "unknown")
+    
+    response = {
+        "status": job_status,
+        "job_id": job_id,
+    }
+    
+    if job_status == "finished":
+        response["result"] = job.result
+    elif job_status == "failed":
+        response["error"] = str(job.exc_info) if job.exc_info else "Unknown error"
+    
+    return response
 
 
 @router.post("/ingest-pdf")

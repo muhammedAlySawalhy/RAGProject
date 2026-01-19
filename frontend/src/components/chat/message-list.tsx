@@ -74,17 +74,17 @@ export function MessageList({
     setUserHasScrolled(false);
   }, []);
 
-  // Auto-scroll when new messages arrive
+  // Auto-scroll when new messages arrive or content changes
   React.useEffect(() => {
     if (autoScroll && !userHasScrolled && messages.length > 0) {
-      // Use a small delay to ensure DOM has updated
-      const timeoutId = setTimeout(() => {
+      // Use requestAnimationFrame to ensure DOM has updated
+      const frameId = requestAnimationFrame(() => {
         scrollToBottom(scrollContainerRef.current, false);
-      }, 50);
+      });
 
-      return () => clearTimeout(timeoutId);
+      return () => cancelAnimationFrame(frameId);
     }
-  }, [messages.length, autoScroll, userHasScrolled]);
+  }, [messages, autoScroll, userHasScrolled]);
 
   // Set up scroll listener
   React.useEffect(() => {
@@ -136,13 +136,14 @@ export function MessageList({
   }
 
   return (
-    <div className={cn('relative flex-1 overflow-hidden', className)}>
+    <div className={cn('relative flex-1 min-h-0', className)}>
       {/* Scrollable message container */}
       <div
         ref={scrollContainerRef}
-        className="h-full overflow-y-auto scroll-smooth"
+        className="h-full overflow-y-auto overscroll-contain"
+        style={{ maxHeight: '100%' }}
       >
-        <div className="mx-auto max-w-3xl py-4">
+        <div className="mx-auto max-w-3xl py-4 px-4">
           {/* Message groups */}
           {groupedMessages.map((group, groupIndex) => (
             <React.Fragment key={groupIndex}>

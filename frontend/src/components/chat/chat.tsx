@@ -10,6 +10,7 @@ import { ChatInput } from "./chat-input";
 import { MessageList } from "./message-list";
 import { ConnectedSidebar } from "./sidebar";
 import { FileUpload } from "./file-upload";
+import { DocumentList } from "./document-list";
 import { Button } from "@/components/ui/button";
 import { AuthModal, AuthMode } from "@/components/auth";
 
@@ -145,7 +146,7 @@ export function Chat() {
         {error && <ErrorBanner message={error} onDismiss={clearError} />}
 
         {/* Messages */}
-        <div className="flex-1 overflow-hidden">
+        <div className="flex-1 min-h-0 overflow-hidden">
           {activeConversationId ? (
             <MessageList
               messages={messages}

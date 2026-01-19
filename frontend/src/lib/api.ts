@@ -517,9 +517,9 @@ export async function pollJobUntilComplete(
   options: PollOptions = {},
 ): Promise<JobStatusResponse> {
   const {
-    initialInterval = 500,
-    maxInterval = 3000,
-    timeout = 120000,
+    initialInterval = 1000,
+    maxInterval = 5000,
+    timeout = 180000,
     onPoll,
   } = options;
 
@@ -552,7 +552,8 @@ export async function pollJobUntilComplete(
     }
 
     await new Promise((resolve) => setTimeout(resolve, interval));
-    interval = Math.min(interval * 1.5, maxInterval);
+    // Slower backoff: multiply by 1.3 instead of 1.5
+    interval = Math.min(interval * 1.3, maxInterval);
   }
 
   throw new ChatError(

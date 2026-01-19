@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 # =============================================================================
 
 OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://localhost:11434")
-MEMGRAPH_HOST = os.getenv("MEMGRAPH_HOST", "localhost")
+
 NEO4J_HOST = os.getenv("NEO4J_HOST", "neo4j")
 NEO4J_USER = os.getenv("NEO4J_USER", "neo4j")
 NEO4J_PASSWORD = os.getenv("NEO4J_PASSWORD", "neo4jpassword")
@@ -49,15 +49,16 @@ config = {
     },
     "llm": {
         "provider": "ollama",
-        "config": {"model": "llama3.2", "ollama_base_url": OLLAMA_HOST},
+        "config": {"model": "llama3.2:1b", "ollama_base_url": OLLAMA_HOST},
     },
     "graph_store": {
         "provider": "neo4j",
         "config": {
-            "url": "neo4j+s://{NEO4J_HOST}:7687",
+           
+            "url": "bolt://neo4j:7687",
             "username": NEO4J_USER,
             "password": NEO4J_PASSWORD,
-            "database":"neo4j"
+            
         },
     },
 }
