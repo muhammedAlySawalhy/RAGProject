@@ -68,7 +68,7 @@ def _store_single_chunk(
         mem_client.add(
             [message],
             user_id=user_id,
-            infer=False,  # Fast storage - embeddings only, no LLM extraction
+            infer=True,  # Fast storage - embeddings only, no LLM extraction
             metadata={
                 "source": DOCUMENT_SOURCE,
                 "filename": filename,
@@ -93,6 +93,9 @@ def _ingest_file_content(content: bytes, filename: str, current_user: CurrentUse
     Uses concurrent processing to embed and store chunks in parallel,
     significantly improving performance for documents with many chunks.
     """
+    # Log user info for debugging
+    logger.info(f"Ingesting document for user: {current_user.username} (ID: {current_user.user_id})")
+    
     # Check if file type is supported
     if not DocumentLoaderFactory.is_supported(filename):
         supported = DocumentLoaderFactory.get_supported_extensions()

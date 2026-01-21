@@ -71,6 +71,16 @@ export const useAuthStore = create<AuthStore>()(
       login: (response: TokenResponse) => {
         const expiresAt = Date.now() + response.expires_in * 1000;
 
+        // Check if this is a different user than before - if so, clear chat data
+        const currentState = get();
+        const previousUserId = currentState.user?.user_id;
+        const newUserId = response.user.user_id;
+
+        if (previousUserId && previousUserId !== newUserId) {
+          // Different user logging in - clear previous user's chat data
+          localStorage.removeItem('rag-chat-storage');
+        }
+
         set((state) => {
           state.isAuthenticated = true;
           state.user = response.user;
@@ -82,6 +92,13 @@ export const useAuthStore = create<AuthStore>()(
       },
 
       logout: () => {
+        // Clear chat data when logging out (import dynamically to avoid circular deps)
+        // This prevents the next user from seeing previous user's data
+        const chatStorage = localStorage.getItem('rag-chat-storage');
+        if (chatStorage) {
+          localStorage.removeItem('rag-chat-storage');
+        }
+
         set((state) => {
           state.isAuthenticated = false;
           state.user = null;

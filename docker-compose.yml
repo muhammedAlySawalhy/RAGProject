@@ -163,7 +163,7 @@ services:
       replicas: 4
       resources:
         limits:
-          memory: 1G  # Workers are CPU-only, GPU work is offloaded to Ollama
+          memory: 1G 
 
   frontend:
     build:

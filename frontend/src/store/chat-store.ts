@@ -226,7 +226,7 @@ export const useChatStore = create<ChatStore>()(
             if (
               role === "user" &&
               conversation.messages.filter((m) => m.role === "user").length ===
-                1
+              1
             ) {
               conversation.title = extractConversationTitle(content);
             }
@@ -412,11 +412,15 @@ export const useChatStore = create<ChatStore>()(
         settings: state.settings,
         sidebarOpen: state.sidebarOpen,
       }),
-      // Handle date serialization
+      // Handle date serialization and user filtering
       onRehydrateStorage: () => (state) => {
         if (state) {
+          // Get current user from auth store
+          const authState = useAuthStore.getState();
+          const currentUserId = authState.user?.user_id;
+
           // Convert date strings back to Date objects
-          state.conversations = state.conversations.map((conv) => ({
+          let conversations = state.conversations.map((conv) => ({
             ...conv,
             createdAt: new Date(conv.createdAt),
             updatedAt: new Date(conv.updatedAt),
@@ -425,6 +429,27 @@ export const useChatStore = create<ChatStore>()(
               timestamp: new Date(msg.timestamp),
             })),
           }));
+
+          // SECURITY: Filter conversations to only show current user's data
+          // If no user is logged in, clear all conversations
+          if (currentUserId) {
+            conversations = conversations.filter(
+              (conv) => conv.userId === currentUserId || conv.userId === 'anonymous'
+            );
+          } else {
+            // Not logged in - don't show any persisted conversations
+            conversations = [];
+          }
+
+          state.conversations = conversations;
+
+          // Reset active conversation if it doesn't belong to current user
+          if (state.activeConversationId) {
+            const activeConv = conversations.find(c => c.id === state.activeConversationId);
+            if (!activeConv) {
+              state.activeConversationId = null;
+            }
+          }
         }
       },
     },

@@ -408,7 +408,7 @@ function FeatureCard({
 }
 
 /**
- * Upload modal component
+ * Upload modal component with tabs for Upload and Documents
  */
 interface UploadModalProps {
   onClose: () => void;
@@ -416,6 +416,8 @@ interface UploadModalProps {
 }
 
 function UploadModal({ onClose, onUploadComplete }: UploadModalProps) {
+  const [activeTab, setActiveTab] = useState<"upload" | "documents">("upload");
+
   // Handle click outside to close
   const handleBackdropClick = useCallback(
     (e: React.MouseEvent) => {
@@ -444,25 +446,64 @@ function UploadModal({ onClose, onUploadComplete }: UploadModalProps) {
       onClick={handleBackdropClick}
     >
       <div className="w-full max-w-lg rounded-lg bg-background shadow-xl">
-        {/* Modal header */}
-        <div className="flex items-center justify-between border-b p-4">
-          <h2 className="text-lg font-semibold">Upload Documents</h2>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8"
-            onClick={onClose}
-          >
-            <XIcon className="h-4 w-4" />
-          </Button>
+        {/* Modal header with tabs */}
+        <div className="border-b">
+          <div className="flex items-center justify-between px-4 pt-4">
+            <h2 className="text-lg font-semibold">Documents</h2>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8"
+              onClick={onClose}
+            >
+              <XIcon className="h-4 w-4" />
+            </Button>
+          </div>
+          {/* Tabs */}
+          <div className="flex gap-1 px-4 pt-2">
+            <button
+              className={cn(
+                "px-4 py-2 text-sm font-medium rounded-t-lg transition-colors",
+                activeTab === "upload"
+                  ? "bg-muted text-foreground border-b-2 border-primary"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+              onClick={() => setActiveTab("upload")}
+            >
+              Upload
+            </button>
+            <button
+              className={cn(
+                "px-4 py-2 text-sm font-medium rounded-t-lg transition-colors",
+                activeTab === "documents"
+                  ? "bg-muted text-foreground border-b-2 border-primary"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+              onClick={() => setActiveTab("documents")}
+            >
+              My Documents
+            </button>
+          </div>
         </div>
 
         {/* Modal content */}
-        <div className="p-4">
-          <FileUpload
-            onUploadComplete={onUploadComplete}
-            onError={(error) => console.error("Upload error:", error)}
-          />
+        <div className="p-4 max-h-[60vh] overflow-y-auto">
+          {activeTab === "upload" ? (
+            <FileUpload
+              onUploadComplete={(results) => {
+                onUploadComplete?.(results);
+                // Switch to documents tab to show the uploaded file
+                setActiveTab("documents");
+              }}
+              onError={(error) => console.error("Upload error:", error)}
+            />
+          ) : (
+            <DocumentList
+              onDocumentDeleted={(filename) => {
+                console.log("Document deleted:", filename);
+              }}
+            />
+          )}
         </div>
 
         {/* Modal footer */}

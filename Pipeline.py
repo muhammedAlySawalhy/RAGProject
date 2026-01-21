@@ -20,24 +20,14 @@ logger = logging.getLogger(__name__)
 OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://localhost:11434")
 MODEL_NAME = os.getenv("OLLAMA_MODEL", "llama3.2:1b")
 
-# Thread-local storage for per-worker LLM instances
-_thread_local = threading.local()
 
 
-def get_llm() -> ChatOllama:
-    """
-    Get a thread/worker-local LLM instance.
-    
-    Each worker process/thread gets its own LLM instance to enable
-    true parallel processing without contention.
-    """
-    if not hasattr(_thread_local, "llm"):
-        logger.info(f"Initializing new LLM instance for worker (model={MODEL_NAME}, host={OLLAMA_HOST})")
-        _thread_local.llm = ChatOllama(
-            model=MODEL_NAME,
-            base_url=OLLAMA_HOST,
-        )
-    return _thread_local.llm
+
+llm = ChatOllama(
+    model=MODEL_NAME,
+    base_url=OLLAMA_HOST,
+)
+
 
 SYSTEM_PROMPT = """
 You are a helpful AI Assistant who answers the user based on the available retrieved context and the conversation.
@@ -231,7 +221,7 @@ def chatbot(state: State):
     logger.info(f"Invoking LLM with {len(msgs)} messages")
     
     # Get worker-local LLM instance for parallel processing
-    llm = get_llm()
+    
     response = llm.invoke(msgs)
     logger.info(f"LLM response length: {len(response.content)} chars")
     return {"messages": [response]}
